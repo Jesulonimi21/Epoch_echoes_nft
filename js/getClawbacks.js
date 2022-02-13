@@ -21,11 +21,11 @@ const initialPrice = 9494;
 ( async () => {
 
     try{
-        const asas = [70789291, 70789350]
-        let appIds = [70791284, 70791285];
+        const asas = [603960750, 603964812, 603964911, 603964993, 603965069, 603965212, 603965306, 603965386, 603965457, 603965554, 603965592, 603965647, 603965731];
+        let appIds = [604060099, 604060100, 604060101, 604060102, 604060103, 604060129, 604060130, 604060131, 604060132, 604060133, 604060134, 604060135, 604060136 ];
         const assetCreator = algosdk.mnemonicToSecretKey( "easy era civil sample soap execute say stuff evolve table grace love mammal glance occur network tree august faculty federal direct total youth abstract story");
         const token = { 'X-API-Key':'ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe'};
-        const server = "https://testnet-algorand.api.purestake.io/ps2"
+        const server = "https://mainnet-algorand.api.purestake.io/ps2"
         const port = "";
         const client = new algosdk.Algodv2(token, server, port);
     //     let params = await client.getTransactionParams().do();
@@ -49,10 +49,19 @@ const initialPrice = 9494;
 
     const arrayOfStatelessProg = await Promise.all(asas.map(async (el, index) =>{
         const res = await compileStatelessProgram(client,el,appIds[index]);
-        return {index, ckawback: res.hash};
+        return {index, clawback: res.hash, b64Addr: res.result };
     }));
 
     console.log(arrayOfStatelessProg);
+
+    const arrayOfClawbacks = arrayOfStatelessProg.map((el) =>{
+        return el.clawback
+    });
+    console.log(arrayOfClawbacks);
+    const arrayOfBase64Hash = arrayOfStatelessProg.map((el) => {
+        return el.b64Addr
+    });
+    console.log(arrayOfBase64Hash);
     }catch(error){
         console.error(error)
     }

@@ -62,7 +62,6 @@ const initialPrice = 9494;
 
 
         //Perform primary sale txn
-   
         const primarySaleTxns = await getPrimarySaleTxn(initialPrice, assetBuyerAccount.addr, assetId, appId, client, params, "Primary sale");
         const lsig = await getLsig(client, assetId, appId);
         let rawSignedTxns = primarySaleTxns.map((el, index) =>{

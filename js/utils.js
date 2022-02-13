@@ -128,10 +128,10 @@ async function getPrimarySaleTxn(salePrice, assetBuyer, assetId, appId, client, 
     const artistPercent = Math.ceil((10/100) * salePrice)
     const lacmaPercent = Math.ceil((20/100) * salePrice);
     const txnFee = 100000;
-    const assetSendTxn =  algosdk.makeAssetTransferTxnWithSuggestedParams(clawback, assetBuyer, undefined, "XVZM2245PXJLKQ4BG2NGUDROTXIL4E7XHTCKJRT3O4PMRQ7GZMACOWD45A",
+    const assetSendTxn =  algosdk.makeAssetTransferTxnWithSuggestedParams(clawback, assetBuyer, undefined, epochAddress,
         1, note, assetId, params);  
     const appCallTxn = algosdk.makeApplicationNoOpTxn(assetBuyer, params, appId, [new Uint8Array(Buffer.from('sell_nft'))]);   
-    const paymentTxn = algosdk.makePaymentTxnWithSuggestedParams(assetBuyer, "XVZM2245PXJLKQ4BG2NGUDROTXIL4E7XHTCKJRT3O4PMRQ7GZMACOWD45A", artistPercent, undefined, note, params);
+    const paymentTxn = algosdk.makePaymentTxnWithSuggestedParams(assetBuyer, epochAddress, artistPercent, undefined, note, params);
     const paymentTxn1 = algosdk.makePaymentTxnWithSuggestedParams(assetBuyer, AmericanArtist, artistPercent, undefined, note, params);
     const paymentTxn2 = algosdk.makePaymentTxnWithSuggestedParams(assetBuyer, Muxx, artistPercent, undefined, note, params);
     const paymentTxn3 = algosdk.makePaymentTxnWithSuggestedParams(assetBuyer, Jacqueline, artistPercent, undefined, note, params);
@@ -149,13 +149,13 @@ async function getPrimarySaleTxn(salePrice, assetBuyer, assetId, appId, client, 
 async function fundFromFaucet(address){
     try{
         const token = { 'X-API-Key':'ADRySlL0NK5trzqZGAE3q1xxIqlQdSfk1nbHxTNe'};
-        const server = "https://testnet-algorand.api.purestake.io/ps2"
+        const server = "https://mainnet-algorand.api.purestake.io/ps2"
         const port = "";
         let note = algosdk.encodeObj("showing prefix");
         const client = new algosdk.Algodv2(token, server, port);
         let params = await client.getTransactionParams().do();
-        const faucetAccount = algosdk.mnemonicToSecretKey("cancel salt correct wife length roof reward clerk weather city strong planet timber trade ozone simple tray prosper dinosaur enter accident select long absorb rude");
-        const paymentTxn = algosdk.makePaymentTxnWithSuggestedParams(faucetAccount.addr, address, 2000000, undefined, note, params);
+        const faucetAccount = algosdk.mnemonicToSecretKey("");
+        const paymentTxn = algosdk.makePaymentTxnWithSuggestedParams(faucetAccount.addr, address, 9000000, undefined, note, params);
         let signedTxn = paymentTxn.signTxn(faucetAccount.sk); 
         let sentTxn = await client.sendRawTransaction(signedTxn).do();
         await waitForConfirmation(client, sentTxn.txId)
